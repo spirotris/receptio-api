@@ -20,8 +20,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe findById(int idRecipe, int servings) {
-        System.out.println("Got a call! id: "+idRecipe);
+    public Recipe findById(int idRecipe) {
         Optional<Recipe> result = recipeRepository.findById(idRecipe);
         return getRecipeEntryFromOptional(result);
     }

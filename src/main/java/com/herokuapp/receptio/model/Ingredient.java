@@ -1,21 +1,24 @@
 package com.herokuapp.receptio.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
-import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "ingredients")
-@NaturalIdCache
 @Data
-public class Ingredient {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties("hibernateLazyInitializer")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idIngredient")
+public class Ingredient implements Serializable {
 
     @Id
-    @Column(name="idingredient")
-    @GeneratedValue(strategy =  GenerationType.AUTO)
-    private int idIngredient;
+    @Column(name = "idingredient", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idIngredient;
 
     @Column(name = "name")
     private String name;
@@ -23,23 +26,20 @@ public class Ingredient {
     @Column(name = "imageurl")
     private String imageUrl;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "ingredient_measurements",
-            joinColumns = {
-                @JoinColumn(name = "idingredient", referencedColumnName = "idingredient") },
-            inverseJoinColumns = {
-                @JoinColumn(name="idmeasurement", referencedColumnName = "idmeasurement") })
+    @OneToOne
+    @JoinTable(name="ingredient_measurements",
+            joinColumns =
+                    { @JoinColumn(name="idingredient", referencedColumnName ="idingredient") },
+            inverseJoinColumns =
+                    { @JoinColumn(name="idmeasurement", referencedColumnName =  "idmeasurement") })
     private Measurement measurement;
 
-    @JsonInclude
-    @Transient
-    private double quantity;
+    @JsonIgnore
+    @OneToMany(mappedBy = "ingredient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<RecipeIngredients> recipeIngredients;
 
     public String getMeasurement() {
         return measurement.toString();
     }
 
-    int getIdIngredient() {
-        return idIngredient;
-    }
 }

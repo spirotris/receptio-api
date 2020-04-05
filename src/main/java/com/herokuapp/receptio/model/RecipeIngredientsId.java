@@ -1,27 +1,21 @@
 package com.herokuapp.receptio.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-@Getter
-@Setter
+@Data @NoArgsConstructor
 public class RecipeIngredientsId implements Serializable {
 
-    @Column(name = "idrecipe")
-    private int idRecipe;
+    private Recipe recipe;
 
-    @Column(name = "idingredient")
-    private int idIngredient;
+    private Ingredient ingredient;
 
-    RecipeIngredientsId(int idRecipe, int idIngredient) {
-        this.idRecipe = idRecipe;
-        this.idIngredient = idIngredient;
+    RecipeIngredientsId(Recipe recipe, Ingredient ingredient) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
     }
 
     @Override
@@ -29,12 +23,12 @@ public class RecipeIngredientsId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RecipeIngredientsId that = (RecipeIngredientsId) o;
-        return idRecipe == that.idRecipe &&
-                idIngredient == that.idIngredient;
+        return recipe == that.recipe &&
+                ingredient == that.ingredient;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idRecipe, idIngredient);
+        return Objects.hash(recipe, ingredient);
     }
 }

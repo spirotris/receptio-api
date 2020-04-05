@@ -1,34 +1,34 @@
 package com.herokuapp.receptio.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="recipe_ingredients")
+@Table(name = "recipe_ingredients")
 @Data
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@IdClass(RecipeIngredientsId.class)
 public class RecipeIngredients {
 
-    @EmbeddedId
-    private RecipeIngredientsId id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idrecipe")
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idrecipe", updatable = false, nullable = false)
+    @JsonIgnore
     private Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idingredient")
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idingredient", updatable = false, nullable = false)
+    @JsonUnwrapped
     private Ingredient ingredient;
 
     @Column(name="quantity")
-    private double quantity;
-
-    public RecipeIngredients(Recipe recipe, Ingredient ingredient) {
-        this.recipe = recipe;
-        this.ingredient = ingredient;
-        this.id = new RecipeIngredientsId(recipe.getIdRecipe(), ingredient.getIdIngredient());
-    }
+    private Double quantity;
 
     @Override
     public boolean equals(Object o) {

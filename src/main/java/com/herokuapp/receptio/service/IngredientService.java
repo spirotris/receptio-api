@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IngredientService {
 
-    List<Ingredient> findByName(String name);
+    List<Ingredient> findAllByName(String name);
 
 }

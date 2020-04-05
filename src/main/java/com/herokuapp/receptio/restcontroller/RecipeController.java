@@ -4,11 +4,7 @@ import com.herokuapp.receptio.model.Recipe;
 import com.herokuapp.receptio.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +17,48 @@ public class RecipeController {
     RecipeService recipeService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Recipe>> searchRecipes(
-            @RequestParam(value = "id", required = false) Integer recipeId,
-            @RequestParam(value = "searchString", required = false) String searchString,
-            @RequestParam(value = "servings", required = false) Integer servings,
-            @RequestParam(value = "resultLimit", required = false) Integer resultLimit) {
+    public List<Recipe> searchRecipes() {
 
-        List<Recipe> recipes = new ArrayList<>();
+        List<Recipe> recipes = recipeService.findAll();
 
-        if(recipeId != null) {
-            recipes.add(recipeService.findById(recipeId, servings));
-            return new ResponseEntity<>(recipes, HttpStatus.OK);
-        }
+        return recipes;
+    }
 
-        recipes.addAll(recipeService.findAll());
+    @GetMapping("/{recipeId}")
+    public Recipe getRecipeById(@PathVariable int recipeId) {
+        return recipeService.findById(recipeId);
+    }
 
-        return new ResponseEntity<>(recipes, HttpStatus.OK);
+    @PostMapping("/")
+    public String saveRecipe(@RequestBody Recipe recipe) {
+        System.out.println("Attempting to save recipe: "+recipe);
+        recipeService.save(recipe);
+        return "Added recipe+: " + recipe;
+    }
+
+    @PutMapping("/{recipeId}")
+    public String updateRecipe(@PathVariable int recipeId, @RequestBody Recipe recipe) {
+        recipe.setIdRecipe(recipeId);
+
+        recipeService.save(recipe);
+
+        return "Updated recipe: " + recipe;
+    }
+
+    @PatchMapping("/{recipeId}")
+    public String partiallyUpdateRecipe(@PathVariable int recipeId, @RequestBody Recipe recipe) {
+        recipe.setIdRecipe(recipeId);
+
+        recipeService.save(recipe);
+
+        return "Updated recipe: " + recipe;
+    }
+
+    @DeleteMapping("/{recipeId}")
+    public String deleteRecipe(@PathVariable int recipeId) {
+        recipeService.deleteById(recipeId);
+
+        return "Deleted recipe with id: " + recipeId;
     }
 
 }

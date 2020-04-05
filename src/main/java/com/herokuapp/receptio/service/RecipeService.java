@@ -8,7 +8,7 @@ public interface RecipeService {
 
     List<Recipe> findAll();
 
-    Recipe findById(int idRecipe, int servings);
+    Recipe findById(int idRecipe);
 
     Recipe findByName(String recipeName);
 

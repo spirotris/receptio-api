@@ -14,8 +14,8 @@ public class IngredientServiceImpl implements IngredientService {
     private IngredientRepository ingredientRepository;
 
     @Override
-    public List<Ingredient> findByName(String name) {
-        return ingredientRepository.findByName(name);
+    public List<Ingredient> findAllByName(String name) {
+        return ingredientRepository.findAllByName(name);
     }
 
 }

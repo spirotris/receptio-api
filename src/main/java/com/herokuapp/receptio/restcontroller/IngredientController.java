@@ -20,6 +20,6 @@ public class IngredientController {
 
     @GetMapping("/")
     public ResponseEntity<List<Ingredient>> searchIngredients() {
-        return new ResponseEntity<>(ingredientService.findByName("cheese"), HttpStatus.OK);
+        return new ResponseEntity<>(ingredientService.findAllByName("cheese"), HttpStatus.OK);
     }
 }
