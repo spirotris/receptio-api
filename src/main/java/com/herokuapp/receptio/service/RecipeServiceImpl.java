@@ -2,17 +2,16 @@ package com.herokuapp.receptio.service;
 
 import com.herokuapp.receptio.model.Recipe;
 import com.herokuapp.receptio.repository.RecipeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RecipeServiceImpl implements RecipeService {
 
-    @Autowired
-    RecipeRepository recipeRepository;
+    private final RecipeRepository recipeRepository;
 
     @Override
     public List<Recipe> findAll() {
@@ -21,19 +20,17 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe findById(int idRecipe) {
-        Optional<Recipe> result = recipeRepository.findById(idRecipe);
-        return getRecipeEntryFromOptional(result);
+        return recipeRepository.findById(idRecipe);
     }
 
     @Override
     public Recipe findByName(String recipeName) {
-        Optional<Recipe> result = recipeRepository.findByName(recipeName);
-        return getRecipeEntryFromOptional(result);
+        return recipeRepository.findByName(recipeName);
     }
 
     @Override
-    public void save(Recipe recipe) {
-        recipeRepository.save(recipe);
+    public Recipe save(Recipe recipe) {
+        return recipeRepository.save(recipe);
     }
 
     @Override
@@ -41,7 +38,8 @@ public class RecipeServiceImpl implements RecipeService {
         recipeRepository.deleteById(idRecipe);
     }
 
-    private Recipe getRecipeEntryFromOptional(Optional<Recipe> recipe) {
-        return recipe.orElse(null);
+    @Override
+    public List<Recipe> findAllByName(String searchString) {
+        return recipeRepository.findAllByName(searchString);
     }
 }

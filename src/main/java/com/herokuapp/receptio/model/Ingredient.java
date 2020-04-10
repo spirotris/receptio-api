@@ -16,7 +16,7 @@ import java.util.List;
 public class Ingredient implements Serializable {
 
     @Id
-    @Column(name = "idingredient", updatable = false, nullable = false)
+    @Column(name = "idingredient")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idIngredient;
 
@@ -26,20 +26,16 @@ public class Ingredient implements Serializable {
     @Column(name = "imageurl")
     private String imageUrl;
 
-    @OneToOne
+    @Column(name="amount")
+    private Double amount;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinTable(name="ingredient_measurements",
             joinColumns =
                     { @JoinColumn(name="idingredient", referencedColumnName ="idingredient") },
             inverseJoinColumns =
-                    { @JoinColumn(name="idmeasurement", referencedColumnName =  "idmeasurement") })
+                    { @JoinColumn(name="idmeasurement", referencedColumnName =  "idmeasurement")})
+    @JsonUnwrapped
     private Measurement measurement;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "ingredient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<RecipeIngredients> recipeIngredients;
-
-    public String getMeasurement() {
-        return measurement.toString();
-    }
 
 }

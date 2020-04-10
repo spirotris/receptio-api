@@ -2,26 +2,42 @@ package com.herokuapp.receptio.restcontroller;
 
 import com.herokuapp.receptio.model.Recipe;
 import com.herokuapp.receptio.service.RecipeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/recipe")
+@RequiredArgsConstructor
 public class RecipeController {
 
-    @Autowired
-    RecipeService recipeService;
+    private Logger logger = LoggerFactory.getLogger(RecipeController.class);
+
+    private final RecipeService recipeService;
 
     @GetMapping("/")
-    public List<Recipe> searchRecipes() {
+    public ResponseEntity<List<Recipe>> searchRecipes(
+            @RequestParam(value = "searchString", required = false) String recipeName) {
 
-        List<Recipe> recipes = recipeService.findAll();
+        List<Recipe> resultList;
+        logger.info("/GET/ parameters: "+recipeName);
 
-        return recipes;
+        if (!StringUtils.isEmpty(recipeName)) {
+            logger.info("Attempting to find recipe by name: "+recipeName);
+            resultList = recipeService.findAllByName(recipeName);
+            logger.info("Hits from search: "+resultList.size());
+        } else {
+            resultList = recipeService.findAll();
+        }
+
+        return new ResponseEntity<List<Recipe>>(resultList, HttpStatus.OK);
     }
 
     @GetMapping("/{recipeId}")
@@ -30,28 +46,26 @@ public class RecipeController {
     }
 
     @PostMapping("/")
-    public String saveRecipe(@RequestBody Recipe recipe) {
-        System.out.println("Attempting to save recipe: "+recipe);
-        recipeService.save(recipe);
-        return "Added recipe+: " + recipe;
+    public Recipe saveRecipe(@RequestBody @Valid Recipe recipe) {
+        logger.info("Attempting to create recipe: "+recipe);
+        return recipeService.save(recipe);
     }
 
     @PutMapping("/{recipeId}")
-    public String updateRecipe(@PathVariable int recipeId, @RequestBody Recipe recipe) {
+    public Recipe updateRecipe(@PathVariable int recipeId,
+                               @RequestBody @Valid Recipe recipe) {
         recipe.setIdRecipe(recipeId);
+        logger.info("Attempting to update recipe id: "+recipeId +"\nRecipe: "+recipe);
 
-        recipeService.save(recipe);
-
-        return "Updated recipe: " + recipe;
+        return recipeService.save(recipe);
     }
 
     @PatchMapping("/{recipeId}")
-    public String partiallyUpdateRecipe(@PathVariable int recipeId, @RequestBody Recipe recipe) {
+    public Recipe partiallyUpdateRecipe(@PathVariable int recipeId,
+                                        @RequestBody Recipe recipe) {
         recipe.setIdRecipe(recipeId);
 
-        recipeService.save(recipe);
-
-        return "Updated recipe: " + recipe;
+        return recipeService.save(recipe);
     }
 
     @DeleteMapping("/{recipeId}")

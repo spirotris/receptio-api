@@ -9,7 +9,11 @@ import java.util.List;
 @Repository
 public interface IngredientRepository extends CrudRepository<Ingredient, Integer> {
 
+    List<Ingredient> findAll();
+
     List<Ingredient> findAllByName(String name);
+
+    Ingredient findById(int id);
 
 }
 

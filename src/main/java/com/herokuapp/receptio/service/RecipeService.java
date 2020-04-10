@@ -12,8 +12,9 @@ public interface RecipeService {
 
     Recipe findByName(String recipeName);
 
-    void save(Recipe recipe);
+    Recipe save(Recipe recipe);
 
     void deleteById(int idRecipe);
 
+    List<Recipe> findAllByName(String searchString);
 }

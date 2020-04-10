@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "recipes")
@@ -15,7 +16,7 @@ import java.util.List;
 public class Recipe implements Serializable {
 
     @Id
-    @Column(name = "idrecipe", updatable = false, nullable = false)
+    @Column(name = "idrecipe")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idRecipe;
 
@@ -34,8 +35,14 @@ public class Recipe implements Serializable {
     @Column(name = "instructions")
     private String instructions;
 
-    @OneToMany(mappedBy = "recipe", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<RecipeIngredients> ingredients;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name="recipe_ingredients",
+            joinColumns =
+                    { @JoinColumn(name="idrecipe", referencedColumnName ="idrecipe") },
+            inverseJoinColumns =
+                    { @JoinColumn(name="idingredient", referencedColumnName =  "idingredient")})
+    @JsonUnwrapped
+    private List<Ingredient> ingredients;
 
     @Column(name = "imageurl")
     private String imageUrl;
