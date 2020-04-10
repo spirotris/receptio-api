@@ -36,6 +36,6 @@ public class Ingredient implements Serializable {
             inverseJoinColumns =
                     { @JoinColumn(name="idmeasurement", referencedColumnName =  "idmeasurement")})
     @JsonUnwrapped
-    private Measurement measurement;
+    private Measurement measurementType;
 
 }

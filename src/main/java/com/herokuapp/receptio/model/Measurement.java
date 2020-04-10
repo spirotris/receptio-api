@@ -22,7 +22,7 @@ public class Measurement implements Serializable {
     private Integer idMeasurement;
 
     @Column(name = "measurement")
-    private String measurement;
+    private String measurementType;
 
 
 }
