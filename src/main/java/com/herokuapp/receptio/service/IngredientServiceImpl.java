@@ -18,19 +18,4 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientRepository.findAll();
     }
 
-    @Override
-    public List<Ingredient> findAllByName(String name) {
-        return ingredientRepository.findAllByName(name);
-    }
-
-    @Override
-    public Ingredient save(Ingredient ingredient) {
-        return ingredientRepository.save(ingredient);
-    }
-
-    @Override
-    public Ingredient findById(int id) {
-        return ingredientRepository.findById(id);
-    }
-
 }

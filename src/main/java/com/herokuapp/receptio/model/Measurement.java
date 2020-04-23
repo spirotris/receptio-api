@@ -1,28 +1,17 @@
 package com.herokuapp.receptio.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.neo4j.ogm.annotation.NodeEntity;
 
-import javax.persistence.*;
-import java.io.Serializable;
-
-@Entity
-@Table(name = "measurements")
+@NodeEntity
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties("hibernateLazyInitializer")
-public class Measurement implements Serializable {
+@JsonIgnoreProperties(value="id")
+public class Measurement extends Entity {
 
-    @Id
-    @Column(name = "idmeasurement")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Integer idMeasurement;
-
-    @Column(name = "measurement")
     private String measurementType;
 
-
+    public Measurement(String measurementType) {
+        this.measurementType = measurementType;
+    }
 }

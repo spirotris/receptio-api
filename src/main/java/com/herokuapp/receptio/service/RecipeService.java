@@ -8,13 +8,12 @@ public interface RecipeService {
 
     List<Recipe> findAll();
 
-    Recipe findById(int idRecipe);
-
-    Recipe findByName(String recipeName);
+    Recipe findById(Long idRecipe);
 
     Recipe save(Recipe recipe);
 
-    void deleteById(int idRecipe);
+    void deleteById(Long idRecipe);
 
-    List<Recipe> findAllByName(String searchString);
+    List<Recipe> findAllByNameContaining(String searchString);
+
 }
