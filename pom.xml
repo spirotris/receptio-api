@@ -18,7 +18,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <neo4j-ogm.version>3.2.8</neo4j-ogm.version>
     </properties>
 
     <dependencies>
@@ -33,18 +32,16 @@
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
         </dependency>
 
-
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-embedded-driver</artifactId>
-            <version>${neo4j-ogm.version}</version>
-            <scope>test</scope>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver-spring-boot-starter</artifactId>
+            <version>4.0.1.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.neo4j.test</groupId>
             <artifactId>neo4j-harness</artifactId>
-            <version>3.2.5</version>
+            <version>4.0.3</version>
             <scope>test</scope>
         </dependency>
 
