@@ -12,7 +12,7 @@ public class RestExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-
+    // TODO: Actually handle different exceptions.
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         ErrorResponse response = new ErrorResponse();

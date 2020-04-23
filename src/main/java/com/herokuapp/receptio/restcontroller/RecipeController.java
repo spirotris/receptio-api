@@ -5,8 +5,6 @@ import com.herokuapp.receptio.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,53 +21,55 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Recipe>> searchRecipes(
-            @RequestParam(value = "searchString", required = false) String recipeName) {
+    public List<Recipe> searchRecipesContainingName(
+            @RequestParam(value = "name", required = false) String recipeName,
+            @RequestParam(value = "ingredients", required = false) String ingredients,
+            @RequestParam(value="limit", required = false) Integer limit) {
 
         List<Recipe> resultList;
-        logger.info("/GET/ parameters: "+recipeName);
+        logger.info("/GET/ parameters: " + recipeName);
 
         if (!StringUtils.isEmpty(recipeName)) {
-            logger.info("Attempting to find recipe by name: "+recipeName);
-            resultList = recipeService.findAllByName(recipeName);
-            logger.info("Hits from search: "+resultList.size());
+            logger.info("Attempting to find recipe by name: " + recipeName);
+            resultList = recipeService.findAllByNameContaining(recipeName);
+            logger.info("Hits from search: " + resultList.size());
         } else {
             resultList = recipeService.findAll();
         }
 
-        return new ResponseEntity<List<Recipe>>(resultList, HttpStatus.OK);
+        return resultList;
     }
 
     @GetMapping("/{recipeId}")
-    public Recipe getRecipeById(@PathVariable int recipeId) {
+    public Recipe getRecipeById(@PathVariable Long recipeId) {
         return recipeService.findById(recipeId);
     }
 
     @PostMapping("/")
     public Recipe saveRecipe(@RequestBody @Valid Recipe recipe) {
-        logger.info("Attempting to create recipe: "+recipe);
+        logger.info("Attempting to create recipe: " + recipe);
         return recipeService.save(recipe);
     }
 
     @PutMapping("/{recipeId}")
-    public Recipe updateRecipe(@PathVariable int recipeId,
+    public Recipe updateRecipe(@PathVariable Long recipeId,
                                @RequestBody @Valid Recipe recipe) {
-        recipe.setIdRecipe(recipeId);
-        logger.info("Attempting to update recipe id: "+recipeId +"\nRecipe: "+recipe);
+        recipe.setId(recipeId);
+        logger.info("Attempting to update recipe id: " + recipeId + "\nRecipe: " + recipe);
 
         return recipeService.save(recipe);
     }
 
     @PatchMapping("/{recipeId}")
-    public Recipe partiallyUpdateRecipe(@PathVariable int recipeId,
+    public Recipe partiallyUpdateRecipe(@PathVariable Long recipeId,
                                         @RequestBody Recipe recipe) {
-        recipe.setIdRecipe(recipeId);
+        recipe.setId(recipeId);
 
         return recipeService.save(recipe);
     }
 
     @DeleteMapping("/{recipeId}")
-    public String deleteRecipe(@PathVariable int recipeId) {
+    public String deleteRecipe(@PathVariable Long recipeId) {
         recipeService.deleteById(recipeId);
 
         return "Deleted recipe with id: " + recipeId;

@@ -5,11 +5,10 @@ import com.herokuapp.receptio.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,18 +21,8 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping("/")
-    public ResponseEntity<List<Ingredient>> searchIngredients() {
-        return new ResponseEntity<>(ingredientService.findAll(), HttpStatus.OK);
+    public List<Ingredient> getAllIngredients() {
+        return ingredientService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Ingredient getIngredient(@PathVariable int id) {
-        return ingredientService.findById(id);
-    }
-
-    @PostMapping("/")
-    public Ingredient saveIngredient(@RequestBody @Valid Ingredient ingredient) {
-        logger.info("Attempting to save ingredient: " + ingredient);
-        return ingredientService.save(ingredient);
-    }
 }
