@@ -23,7 +23,7 @@ public class MeasurementController {
 
     private final IngredientService ingredientService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Measurement> getAllMeasurements() {
         List<Ingredient> ingredients = ingredientService.findAll();
         List<Measurement> measurements = new ArrayList<>();

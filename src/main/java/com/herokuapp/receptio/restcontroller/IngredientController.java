@@ -20,7 +20,7 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Ingredient> getAllIngredients() {
         return ingredientService.findAll();
     }

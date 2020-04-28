@@ -11,9 +11,9 @@ public interface RecipeRepository extends Neo4jRepository<Recipe, Long> {
 
     List<Recipe> findAll();
 
-    List<Recipe> findAllByNameContaining(String str);
+    List<Recipe> findRecipesByNameContainsIgnoreCase(String str);
 
-    // TODO: Search after recipes by ingredients
-    //List<Recipe> findAllByContainingAndIngredientsExists(List<Ingredient> ingredients);
+    List<Recipe> findAllByIngredientsNameContainsIgnoreCase(List<String> ingredients);
+
 
 }

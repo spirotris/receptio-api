@@ -14,6 +14,8 @@ public interface RecipeService {
 
     void deleteById(Long idRecipe);
 
-    List<Recipe> findAllByNameContaining(String searchString);
+    List<Recipe> findRecipesByNameContaining(String searchString);
+
+    List<Recipe> findRecipesByIngredientsContains(String ingredients);
 
 }

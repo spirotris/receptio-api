@@ -20,19 +20,21 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Recipe> searchRecipesContainingName(
             @RequestParam(value = "name", required = false) String recipeName,
             @RequestParam(value = "ingredients", required = false) String ingredients,
-            @RequestParam(value="limit", required = false) Integer limit) {
+            @RequestParam(value = "limit", required = false) Integer limit) {
 
         List<Recipe> resultList;
-        logger.info("/GET/ parameters: " + recipeName);
 
         if (!StringUtils.isEmpty(recipeName)) {
-            logger.info("Attempting to find recipe by name: " + recipeName);
-            resultList = recipeService.findAllByNameContaining(recipeName);
-            logger.info("Hits from search: " + resultList.size());
+            resultList = recipeService.findRecipesByNameContaining(recipeName);
+            if (!StringUtils.isEmpty(ingredients)) {
+                resultList = recipeService.findRecipesByIngredientsContains(ingredients);
+            }
+        } else if(!StringUtils.isEmpty(ingredients)) {
+            resultList = recipeService.findRecipesByIngredientsContains(ingredients);
         } else {
             resultList = recipeService.findAll();
         }
@@ -45,7 +47,7 @@ public class RecipeController {
         return recipeService.findById(recipeId);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public Recipe saveRecipe(@RequestBody @Valid Recipe recipe) {
         logger.info("Attempting to create recipe: " + recipe);
         return recipeService.save(recipe);
