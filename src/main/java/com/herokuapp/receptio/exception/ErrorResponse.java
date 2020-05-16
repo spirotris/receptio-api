@@ -1,4 +1,4 @@
-package com.herokuapp.receptio.restcontroller;
+package com.herokuapp.receptio.exception;
 
 import lombok.Data;
 

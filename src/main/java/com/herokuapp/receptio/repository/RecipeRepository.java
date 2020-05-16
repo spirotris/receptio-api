@@ -9,11 +9,13 @@ import java.util.List;
 @Repository
 public interface RecipeRepository extends Neo4jRepository<Recipe, Long> {
 
-    List<Recipe> findAll();
+    List<Recipe> findAll(int limit);
 
-    List<Recipe> findRecipesByNameContainsIgnoreCase(String str);
+    List<Recipe> findRecipesByNameContainsIgnoreCase(String str, int limit);
 
-    List<Recipe> findAllByIngredientsNameContainsIgnoreCase(List<String> ingredients);
+    List<Recipe> findAllByIngredientsNameContainsAllIgnoreCase(List<String> ingredients, int limit);
 
+    List<Recipe> findRecipesByNameContainsAndIngredientsNameContainingAllIgnoreCase(String name, List<String> ingredients, int limit);
 
+    List<Recipe> findAllByUser(String userId);
 }

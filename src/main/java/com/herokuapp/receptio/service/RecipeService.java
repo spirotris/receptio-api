@@ -6,16 +6,21 @@ import java.util.List;
 
 public interface RecipeService {
 
-    List<Recipe> findAll();
+    List<Recipe> findAll(int limit);
 
     Recipe findById(Long idRecipe);
 
     Recipe save(Recipe recipe);
 
-    void deleteById(Long idRecipe);
+    Recipe update(Recipe recipe);
 
-    List<Recipe> findRecipesByNameContaining(String searchString);
+    void deleteById(Long idRecipe, String user);
 
-    List<Recipe> findRecipesByIngredientsContains(String ingredients);
+    List<Recipe> findRecipesByName(String searchString, int limit);
 
+    List<Recipe> findRecipesByIngredients(String ingredients, int limit);
+
+    List<Recipe> findRecipesByNameAndIngredients(String recipeName, String ingredients, int limit);
+
+    List<Recipe> findRecipesByUser(String userId);
 }

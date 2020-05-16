@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MeasurementService {
 
-    List<Measurement> findAll();
+    List<Measurement> getAllMeasurements();
 
 }
