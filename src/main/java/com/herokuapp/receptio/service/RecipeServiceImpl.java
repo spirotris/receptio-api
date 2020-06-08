@@ -1,5 +1,6 @@
 package com.herokuapp.receptio.service;
 
+import com.herokuapp.receptio.exception.BadResourceException;
 import com.herokuapp.receptio.model.Recipe;
 import com.herokuapp.receptio.repository.RecipeRepository;
 import com.herokuapp.receptio.exception.InvalidAuthorizationException;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +42,14 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe save(Recipe recipe) {
-        return recipeRepository.save(recipe);
+    public Recipe save(Recipe recipe) throws BadResourceException {
+        Recipe result = null;
+        if(!StringUtils.isEmpty(recipe.getUser())) {
+            result = recipeRepository.save(recipe);
+        } else {
+            throw new BadResourceException("User cannot be null.");
+        }
+        return result;
     }
 
     @Override

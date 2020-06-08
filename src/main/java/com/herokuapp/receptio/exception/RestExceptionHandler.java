@@ -18,12 +18,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse response = new ErrorResponse();
 
         response.setMessage("Access denied");
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setTimestamp(System.currentTimeMillis());
 
         logger.error("InvalidAuthorizationException: " + e.getMessage(), e);
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
     }
 
@@ -32,13 +32,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse response = new ErrorResponse();
 
         response.setMessage("Resource not found");
-        response.setStatus(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.NO_CONTENT.value());
         response.setTimestamp(System.currentTimeMillis());
 
         logger.info("ResourceNotFoundException: " + e.getMessage(), e);
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
 
+    @ExceptionHandler(BadResourceException.class)
+    public ResponseEntity<ErrorResponse> handleBadResourceException(BadResourceException e) {
+        ErrorResponse response = new ErrorResponse();
+
+        response.setMessage("Resource not found");
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setTimestamp(System.currentTimeMillis());
+
+        logger.info("ResourceNotFoundException: " + e.getMessage(), e);
+
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
@@ -51,6 +63,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         logger.error("Exception: " + e.getMessage(), e);
 
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

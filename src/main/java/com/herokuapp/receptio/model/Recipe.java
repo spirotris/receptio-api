@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @NodeEntity
@@ -27,7 +26,6 @@ public class Recipe extends Entity {
     private String author;
 
     @CreatedBy
-    @NotNull
     private String user;
 
     @CreatedDate

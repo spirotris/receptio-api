@@ -1,8 +1,5 @@
 package com.herokuapp.receptio.restcontroller;
 
-import com.herokuapp.receptio.exception.BadResourceException;
-import com.herokuapp.receptio.exception.InvalidAuthorizationException;
-import com.herokuapp.receptio.exception.ResourceNotFoundException;
 import com.herokuapp.receptio.model.Recipe;
 import com.herokuapp.receptio.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +12,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -62,7 +58,7 @@ public class RecipeController {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<Recipe> saveRecipe(@RequestBody @Valid Recipe recipe,
+    public ResponseEntity<Recipe> saveRecipe(@RequestBody Recipe recipe,
                                              @AuthenticationPrincipal Jwt jwt) {
         String user = jwt.getClaim("sub");
         recipe.setUser(user);
@@ -73,7 +69,7 @@ public class RecipeController {
 
     @PutMapping(path = "/{recipeId}", consumes = "application/json")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long recipeId,
-                                               @RequestBody @Valid Recipe recipe,
+                                               @RequestBody Recipe recipe,
                                                @AuthenticationPrincipal Jwt jwt) {
         String user = jwt.getClaim("sub");
         recipe.setId(recipeId);

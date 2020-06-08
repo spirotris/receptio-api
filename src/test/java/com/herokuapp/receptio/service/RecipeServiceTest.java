@@ -32,6 +32,7 @@ public class RecipeServiceTest {
     public void setUp() {
         Recipe recipe = new Recipe();
         recipe.setName("test");
+        recipe.setUser("test");
 
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient firstIngredient = new Ingredient();
@@ -54,6 +55,7 @@ public class RecipeServiceTest {
     public void repositorySavesRecipe() {
         Recipe recipe = new Recipe();
         recipe.setName("test");
+        recipe.setUser("test");
 
         Recipe result = recipeService.save(recipe);
 
